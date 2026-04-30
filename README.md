@@ -1,73 +1,99 @@
-# React + TypeScript + Vite
+# Jack — 3D Creator Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, dark-themed 3D creator portfolio landing page built with React, TypeScript, Tailwind CSS, and Framer Motion. Designed to make a striking first impression with fluid animations, scroll-driven effects, and a fully responsive layout.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+- **Magnetic Hero Portrait** — mouse-following magnetic hover effect on the 3D character
+- **Scroll-Driven Marquee** — two rows of project GIFs that glide in opposite directions as you scroll
+- **Animated About Text** — character-by-character opacity reveal driven by scroll progress
+- **Sticky Stacking Project Cards** — cards that scale down as you scroll past, creating a depth effect
+- **Services List** — staggered animated service items on a clean white section
+- **Contact Section** — two-column layout with a working form, email link, and 5 social icon buttons
+- **Kanit Typography** — bold, uppercase, fluid `clamp()` sizing throughout
+- **Framer Motion** animations — FadeIn, whileInView, useScroll, useTransform
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Tool | Version |
+|---|---|
+| React | ^19 |
+| TypeScript | ^5 |
+| Vite | ^8 |
+| Tailwind CSS | ^3.4 |
+| Framer Motion | ^12.38 |
+| Lucide React | latest |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📁 Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/
+│   ├── AnimatedText.tsx     # Scroll-driven char-by-char text reveal
+│   ├── ContactButton.tsx    # Gradient pill CTA button
+│   ├── FadeIn.tsx           # Reusable whileInView fade wrapper
+│   ├── LiveProjectButton.tsx # Ghost outline pill button
+│   └── Magnet.tsx           # Mouse-following magnetic hover effect
+│
+├── sections/
+│   ├── HeroSection.tsx      # Full-screen hero with nav + portrait
+│   ├── MarqueeSection.tsx   # Scroll-driven dual-row image marquee
+│   ├── AboutSection.tsx     # About me with animated bio text
+│   ├── ServicesSection.tsx  # 5-item services list on white bg
+│   ├── ProjectsSection.tsx  # 3 sticky stacking project cards
+│   └── ContactSection.tsx   # Contact form + social links + footer
+│
+├── App.tsx
+├── main.tsx
+└── index.css
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
 ```
+
+---
+
+## 🎨 Design Tokens
+
+| Token | Value |
+|---|---|
+| Background | `#0C0C0C` |
+| Text | `#D7E2EA` |
+| Heading gradient | `#646973` → `#BBCCD7` |
+| CTA gradient | `#18011F` → `#B600A8` → `#7621B0` → `#BE4C00` |
+| Font | Kanit (300–900) via Google Fonts |
+
+---
+
+## 📌 Roadmap
+
+- [ ] Fix minor About section spacing tweaks
+- [ ] Wire contact form to a real email service (EmailJS / Resend)
+- [ ] Add real social media URLs
+- [ ] Add more projects to the stacking cards
+- [ ] Performance audit + image optimization
+- [ ] Deploy to Vercel / Netlify
+
+---
+
+## 📄 License
+
+MIT — feel free to fork and adapt.
