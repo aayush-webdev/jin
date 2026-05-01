@@ -2,7 +2,7 @@ import FadeIn from '../components/FadeIn'
 import Magnet from '../components/Magnet'
 import ContactButton from '../components/ContactButton'
 
-const NAV_LINKS = ['About', 'Price', 'Projects', 'Contact']
+const NAV_LINKS = ['About', 'Services', 'Projects', 'Contact']
 
 const PORTRAIT_URL =
   'https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png'
@@ -35,26 +35,27 @@ export default function HeroSection() {
       <FadeIn delay={0.15} y={40} className="overflow-hidden px-3 sm:px-4 md:px-6">
         <h1
           className="hero-heading font-black uppercase tracking-tight leading-none w-full
-            text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]
+            text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[13vw]
             mt-6 sm:mt-4 md:-mt-5"
           style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'clip' }}
         >
-          Hi, i&apos;m jack
+          Hi, i&apos;m jitender
         </h1>
       </FadeIn>
 
-      {/* Portrait — absolutely centered */}
+      {/* Portrait */}
       <FadeIn
         delay={0.6}
         y={30}
         className="absolute left-1/2 -translate-x-1/2 z-10
-          w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px]
-          top-1/2 -translate-y-1/2
-          sm:top-auto sm:translate-y-0 sm:bottom-0"
+          w-[70vw] max-w-[520px]
+          top-[55%] -translate-y-1/2
+          sm:top-auto sm:bottom-0 sm:translate-y-0"
+        style={{ pointerEvents: 'none' }}
       >
         <Magnet
-          padding={150}
-          strength={3}
+          padding={80}
+          strength={2.5}
           activeTransition="transform 0.3s ease-out"
           inactiveTransition="transform 0.6s ease-in-out"
         >
@@ -63,6 +64,8 @@ export default function HeroSection() {
             alt="Jack – 3D Creator portrait"
             className="w-full h-auto object-contain select-none"
             draggable={false}
+            loading="eager"
+            decoding="async"
           />
         </Magnet>
       </FadeIn>
