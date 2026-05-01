@@ -101,7 +101,7 @@ export default function ContactSection() {
           <FadeIn delay={0} y={40}>
             <h2
               className="hero-heading font-black uppercase leading-none tracking-tight"
-              style={{ fontSize: 'clamp(3rem, 9vw, 120px)' }}
+              style={{ fontSize: 'clamp(2.5rem, 5.5vw, 80px)' }}
             >
               Let&apos;s<br />work<br />together.
             </h2>
@@ -119,7 +119,7 @@ export default function ContactSection() {
           {/* Email */}
           <FadeIn delay={0.25} y={20}>
             <a
-              href="mailto:jack@example.com"
+              href="mailto:aayushsharma7065@gmail.com"
               className="inline-flex items-center gap-3 text-[#D7E2EA] font-medium hover:opacity-70 transition-opacity duration-200 group"
               style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)' }}
             >
@@ -129,7 +129,7 @@ export default function ContactSection() {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
               </span>
-              jack@example.com
+              aayushsharma7065@gmail.com
             </a>
           </FadeIn>
 
