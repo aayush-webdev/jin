@@ -34,9 +34,10 @@ export default function HeroSection() {
       {/* Hero heading */}
       <FadeIn delay={0.15} y={40} className="overflow-hidden px-3 sm:px-4 md:px-6">
         <h1
-          className="hero-heading font-black uppercase tracking-tight leading-none whitespace-nowrap w-full
+          className="hero-heading font-black uppercase tracking-tight leading-none w-full
             text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]
             mt-6 sm:mt-4 md:-mt-5"
+          style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'clip' }}
         >
           Hi, i&apos;m jack
         </h1>
@@ -67,12 +68,12 @@ export default function HeroSection() {
       </FadeIn>
 
       {/* Bottom bar */}
-      <div className="mt-auto flex justify-between items-end px-6 md:px-10 pb-7 sm:pb-8 md:pb-10">
+      <div className="mt-auto flex justify-between items-end px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 relative z-20">
         <FadeIn delay={0.35} y={20}>
           <p
             className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug
-              max-w-[160px] sm:max-w-[220px] md:max-w-[260px]"
-            style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
+              max-w-[140px] sm:max-w-[220px] md:max-w-[260px]"
+            style={{ fontSize: 'clamp(0.65rem, 1.4vw, 1.5rem)' }}
           >
             a 3d creator driven by crafting striking and unforgettable projects
           </p>

@@ -15,27 +15,43 @@ export default function AnimatedText({ text, className = '', style = {} }: Anima
     offset: ['start 0.8', 'end 0.2'],
   })
 
-  const characters = text.split('')
+  // Split into words so the browser can only wrap at word boundaries,
+  // never mid-word. Each word is an inline-block so it stays together.
+  const words = text.split(' ')
+  const totalChars = text.replace(/ /g, '').length
+  let charIndex = 0
 
   return (
     <p
       ref={ref}
       className={`relative ${className}`}
-      style={{ overflowWrap: 'break-word', wordBreak: 'break-word', ...style }}
+      style={style}
       aria-label={text}
     >
-      {characters.map((char, i) => {
-        const start = i / characters.length
-        const end = start + 1 / characters.length
+      {words.map((word, wi) => {
+        const wordSpans = word.split('').map((char) => {
+          const globalIndex = charIndex
+          charIndex++
+          const start = globalIndex / totalChars
+          const end = Math.min(start + 1 / totalChars + 0.05, 1)
+          return (
+            <CharSpan
+              key={`${wi}-${globalIndex}`}
+              char={char}
+              progress={scrollYProgress}
+              start={start}
+              end={end}
+            />
+          )
+        })
 
         return (
-          <CharSpan
-            key={i}
-            char={char}
-            progress={scrollYProgress}
-            start={start}
-            end={Math.min(end + 0.05, 1)}
-          />
+          <span key={wi} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+            {wordSpans}
+            {wi < words.length - 1 && (
+              <span style={{ display: 'inline-block', width: '0.3em' }} aria-hidden />
+            )}
+          </span>
         )
       })}
     </p>
@@ -55,12 +71,12 @@ function CharSpan({ char, progress, start, end }: CharSpanProps) {
 
   return (
     <span style={{ position: 'relative', display: 'inline' }}>
-      <span style={{ opacity: 0, userSelect: 'none' }}>{char === ' ' ? '\u00A0' : char}</span>
+      <span style={{ opacity: 0, userSelect: 'none' }}>{char}</span>
       <motion.span
         style={{ opacity, position: 'absolute', left: 0, top: 0 }}
         aria-hidden
       >
-        {char === ' ' ? '\u00A0' : char}
+        {char}
       </motion.span>
     </span>
   )

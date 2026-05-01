@@ -49,7 +49,7 @@ export default function ServicesSection() {
       {/* Heading */}
       <FadeIn delay={0} y={40}>
         <h2
-          className="font-black uppercase text-center text-[#0C0C0C]
+          className="font-black uppercase leading-none tracking-tight text-center text-[#0C0C0C]
             mb-16 sm:mb-20 md:mb-28"
           style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
         >

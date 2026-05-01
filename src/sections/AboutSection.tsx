@@ -72,7 +72,7 @@ export default function AboutSection() {
           <AnimatedText
             text={ABOUT_TEXT}
             className="font-medium text-center leading-relaxed w-full max-w-[560px] text-[#D7E2EA]"
-            style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)', overflowWrap: 'break-word', wordBreak: 'break-word' }}
+            style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }}
           />
           <ContactButton id="about-contact-btn" />
         </div>

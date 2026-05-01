@@ -282,7 +282,7 @@ export default function ContactSection() {
       <div className="mt-24 sm:mt-32 flex flex-col sm:flex-row justify-between items-center gap-4
         border-t border-[#D7E2EA]/10 pt-8 max-w-6xl mx-auto">
         <span className="text-[#D7E2EA]/30 text-sm font-light uppercase tracking-widest">
-          © 2025 Jack — 3D Creator
+          © 2026 Jack — 3D Creator
         </span>
         <span className="text-[#D7E2EA]/20 text-xs font-light">
           Designed &amp; built with passion
