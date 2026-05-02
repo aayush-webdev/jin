@@ -80,28 +80,28 @@ function ProjectCard({ project, index, totalCards }: ProjectCardProps) {
         style={{ scale, top: `${96 + index * 28}px` }}
         className="sticky w-full
           rounded-[40px] sm:rounded-[50px] md:rounded-[60px]
-          border-2 border-[#D7E2EA]
-          bg-[#0C0C0C]
+          border-2 border-[#E2E6EF]
+          bg-[#FFFFFF]
           p-4 sm:p-6 md:p-8"
       >
         {/* Top row */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4 sm:mb-6 md:mb-8">
           <div className="flex items-center gap-4 md:gap-6">
             <span
-              className="font-black text-[#D7E2EA] leading-none"
+              className="font-black text-[#19191D] leading-none"
               style={{ fontSize: 'clamp(2.5rem, 8vw, 120px)' }}
             >
               {project.num}
             </span>
             <div className="flex flex-col">
               <span
-                className="text-[#D7E2EA] uppercase tracking-widest font-medium"
+                className="text-[#19191D] uppercase tracking-widest font-medium"
                 style={{ fontSize: 'clamp(0.65rem, 1.2vw, 1rem)', opacity: 0.6 }}
               >
                 {project.category}
               </span>
               <span
-                className="text-[#D7E2EA] font-black uppercase leading-none"
+                className="text-[#19191D] font-black uppercase leading-none"
                 style={{ fontSize: 'clamp(1.2rem, 3vw, 2.8rem)' }}
               >
                 {project.name}
@@ -154,7 +154,7 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
+      className="bg-[#F5F7FB] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
         -mt-10 sm:-mt-12 md:-mt-14 z-10 relative
         px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-20"
     >

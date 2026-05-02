@@ -84,15 +84,15 @@ export default function ContactSection() {
   }
 
   const inputClass =
-    'w-full bg-transparent border border-[#D7E2EA]/20 rounded-2xl px-5 py-4 text-[#D7E2EA] placeholder-[#D7E2EA]/30 font-light text-base outline-none focus:border-[#D7E2EA]/60 transition-colors duration-200'
+    'w-full bg-transparent border border-[#E2E6EF] rounded-2xl px-5 py-4 text-[#19191D] placeholder-[#8A93A3] font-light text-base outline-none focus:border-[#3C83F5] transition-colors duration-200'
 
   return (
     <section
       id="contact"
-      className="bg-[#0C0C0C] relative px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-28"
+      className="bg-[#F5F7FB] relative px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-28"
     >
       {/* Thin top divider */}
-      <div className="w-full h-px bg-[#D7E2EA]/10 mb-20 sm:mb-24 md:mb-32" />
+      <div className="w-full h-px bg-[#E2E6EF] mb-20 sm:mb-24 md:mb-32" />
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
@@ -109,7 +109,7 @@ export default function ContactSection() {
 
           <FadeIn delay={0.15} y={20}>
             <p
-              className="text-[#D7E2EA]/60 font-light leading-relaxed max-w-sm"
+              className="text-[#5B6472] font-light leading-relaxed max-w-sm"
               style={{ fontSize: 'clamp(0.95rem, 1.6vw, 1.15rem)' }}
             >
               Have a project in mind? I&apos;d love to hear about it. Drop me a message and let&apos;s create something incredible together.
@@ -120,10 +120,10 @@ export default function ContactSection() {
           <FadeIn delay={0.25} y={20}>
             <a
               href="mailto:aayushsharma7065@gmail.com"
-              className="inline-flex items-center gap-3 text-[#D7E2EA] font-medium hover:opacity-70 transition-opacity duration-200 group"
+              className="inline-flex items-center gap-3 text-[#19191D] font-medium hover:text-[#3C83F5] transition-colors duration-200 group"
               style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)' }}
             >
-              <span className="w-10 h-10 rounded-full border border-[#D7E2EA]/20 flex items-center justify-center group-hover:border-[#D7E2EA]/60 transition-colors duration-200">
+              <span className="w-10 h-10 rounded-full border border-[#E2E6EF] flex items-center justify-center group-hover:border-[#3C83F5] transition-colors duration-200">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
@@ -137,7 +137,7 @@ export default function ContactSection() {
           <FadeIn delay={0.35} y={20}>
             <div className="flex flex-col gap-4">
               <span
-                className="text-[#D7E2EA]/40 uppercase tracking-widest font-medium"
+                className="text-[#8A93A3] uppercase tracking-widest font-medium"
                 style={{ fontSize: '0.7rem' }}
               >
                 Find me on
@@ -156,8 +156,8 @@ export default function ContactSection() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 + i * 0.07, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                     whileHover={{ scale: 1.08 }}
-                    className="w-11 h-11 rounded-full border border-[#D7E2EA]/20 flex items-center justify-center
-                      text-[#D7E2EA]/60 hover:text-[#D7E2EA] hover:border-[#D7E2EA]/60
+                    className="w-11 h-11 rounded-full border border-[#E2E6EF] flex items-center justify-center
+                      text-[#5B6472] hover:text-[#3C83F5] hover:border-[#3C83F5]
                       transition-colors duration-200 cursor-pointer"
                   >
                     {social.icon}
@@ -179,7 +179,7 @@ export default function ContactSection() {
             {/* Name + Email row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-name" className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest font-medium pl-1">
+                <label htmlFor="contact-name" className="text-[#8A93A3] text-xs uppercase tracking-widest font-medium pl-1">
                   Name
                 </label>
                 <input
@@ -194,7 +194,7 @@ export default function ContactSection() {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-email" className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest font-medium pl-1">
+                <label htmlFor="contact-email" className="text-[#8A93A3] text-xs uppercase tracking-widest font-medium pl-1">
                   Email
                 </label>
                 <input
@@ -212,7 +212,7 @@ export default function ContactSection() {
 
             {/* Subject */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="contact-subject" className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest font-medium pl-1">
+              <label htmlFor="contact-subject" className="text-[#8A93A3] text-xs uppercase tracking-widest font-medium pl-1">
                 Subject
               </label>
               <input
@@ -228,7 +228,7 @@ export default function ContactSection() {
 
             {/* Message */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="contact-message" className="text-[#D7E2EA]/40 text-xs uppercase tracking-widest font-medium pl-1">
+              <label htmlFor="contact-message" className="text-[#8A93A3] text-xs uppercase tracking-widest font-medium pl-1">
                 Message
               </label>
               <textarea
@@ -253,13 +253,8 @@ export default function ContactSection() {
                 whileTap={{ scale: status === 'idle' ? 0.97 : 1 }}
                 className="rounded-full font-medium uppercase tracking-widest text-white cursor-pointer
                   px-10 py-4 text-sm
-                  disabled:opacity-60 disabled:cursor-not-allowed"
-                style={{
-                  background: 'linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)',
-                  boxShadow: '0px 4px 4px rgba(181, 1, 167, 0.25), inset 4px 4px 12px #7721B1',
-                  outline: '2px solid white',
-                  outlineOffset: '-3px',
-                }}
+                  disabled:opacity-60 disabled:cursor-not-allowed 
+                  bg-[#3C83F5] hover:bg-[#2F6FE0] transition-colors duration-200"
               >
                 {status === 'sending' ? 'Sending…' : status === 'sent' ? '✓ Sent!' : 'Send Message'}
               </motion.button>
@@ -268,7 +263,7 @@ export default function ContactSection() {
                 <motion.span
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="text-[#D7E2EA]/60 text-sm font-light"
+                  className="text-[#5B6472] text-sm font-light"
                 >
                   I&apos;ll get back to you soon.
                 </motion.span>
@@ -280,12 +275,12 @@ export default function ContactSection() {
 
       {/* Footer */}
       <div className="mt-24 sm:mt-32 flex flex-col sm:flex-row justify-between items-center gap-4
-        border-t border-[#D7E2EA]/10 pt-8 max-w-6xl mx-auto">
-        <span className="text-[#D7E2EA]/30 text-sm font-light uppercase tracking-widest">
-          © 2026 Jack — 3D Creator
+        border-t border-[#E2E6EF] pt-8 max-w-6xl mx-auto">
+        <span className="text-[#8A93A3] text-sm font-light uppercase tracking-widest">
+          © 2026 Jitender — reel creator
         </span>
-        <span className="text-[#D7E2EA]/20 text-xs font-light">
-          Designed &amp; built with passion
+        <span className="text-[#8A93A3] text-xs font-light">
+          Designed &amp; built by Aayush Sharma
         </span>
       </div>
     </section>

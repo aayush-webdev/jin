@@ -14,16 +14,15 @@ export default function HeroSection() {
 
   // Detect mobile viewport for disabling Magnet on touch devices
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setMenuOpen(false);
+    };
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  // Auto-close menu on resize to desktop
-  useEffect(() => {
-    if (!isMobile) setMenuOpen(false);
-  }, [isMobile]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -36,7 +35,7 @@ export default function HeroSection() {
       <FadeIn delay={0} y={-20} className="w-full relative z-50">
         <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8">
           {/* Mobile: Logo */}
-          <div className="md:hidden font-black uppercase tracking-tight leading-none text-[#D7E2EA] text-[2rem]">
+          <div className="md:hidden font-black uppercase tracking-tight leading-none text-[#19191D] text-[2rem]">
             JITENDER
           </div>
 
@@ -47,7 +46,7 @@ export default function HeroSection() {
                 key={link}
                 href={`#${link.toLowerCase()}`}
                 id={`nav-${link.toLowerCase()}`}
-                className="text-[#D7E2EA] font-medium uppercase tracking-wider
+                className="text-[#19191D] font-medium uppercase tracking-wider
                   text-sm md:text-lg lg:text-[1.4rem]
                   transition-opacity duration-200 hover:opacity-70"
               >
@@ -58,7 +57,7 @@ export default function HeroSection() {
 
           {/* Mobile: Hamburger / Close toggle */}
           <button
-            className="md:hidden text-[#D7E2EA] hover:opacity-70 transition-opacity"
+            className="md:hidden text-[#19191D] hover:opacity-70 transition-opacity"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen((prev) => !prev)}
           >
@@ -99,7 +98,7 @@ export default function HeroSection() {
       {/* ── Mobile Full-Screen Menu Overlay ── */}
       <div
         className={`md:hidden fixed inset-0 z-40 flex flex-col items-center justify-center gap-10
-          bg-black transition-opacity duration-300
+          bg-[#F5F7FB] transition-opacity duration-300
           ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         aria-hidden={!menuOpen}
       >
@@ -108,7 +107,7 @@ export default function HeroSection() {
             key={link}
             href={`#${link.toLowerCase()}`}
             onClick={closeMenu}
-            className="text-[#D7E2EA] font-black uppercase tracking-widest text-4xl
+            className="text-[#19191D] font-black uppercase tracking-widest text-4xl
               transition-opacity duration-200 hover:opacity-60"
             style={{ transitionDelay: menuOpen ? `${i * 60}ms` : "0ms" }}
           >
@@ -186,7 +185,7 @@ export default function HeroSection() {
           className="w-full flex justify-center md:justify-start"
         >
           <p
-            className="text-[#D7E2EA] font-light uppercase tracking-wide leading-relaxed md:leading-snug
+            className="text-[#19191D] font-light uppercase tracking-wide leading-relaxed md:leading-snug
               max-w-[280px] sm:max-w-[220px] md:max-w-[260px] text-center md:text-left
               text-[0.95rem] md:text-[clamp(0.65rem,1.4vw,1.5rem)]"
           >

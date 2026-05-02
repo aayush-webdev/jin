@@ -49,7 +49,7 @@ export default function ServicesSection() {
       {/* Heading */}
       <FadeIn delay={0} y={40}>
         <h2
-          className="font-black uppercase leading-none tracking-tight text-center text-[#0C0C0C]
+          className="font-black uppercase leading-none tracking-tight text-center text-[#19191D]
             mb-16 sm:mb-20 md:mb-28"
           style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
         >
@@ -65,12 +65,12 @@ export default function ServicesSection() {
               id={`service-${service.num}`}
               className="flex items-start gap-6 md:gap-10
                 py-8 sm:py-10 md:py-12
-                border-t border-[rgba(12,12,12,0.15)]
+                border-t border-[#E2E6EF]
                 last:border-b"
             >
               {/* Number */}
               <span
-                className="font-black text-[#0C0C0C] leading-none flex-shrink-0 -mt-2"
+                className="font-black text-[#19191D] leading-none flex-shrink-0 -mt-2"
                 style={{ fontSize: 'clamp(3rem, 10vw, 140px)' }}
                 aria-hidden
               >
@@ -80,13 +80,13 @@ export default function ServicesSection() {
               {/* Name + Description */}
               <div className="flex flex-col gap-2 pt-2">
                 <span
-                  className="font-medium uppercase text-[#0C0C0C]"
+                  className="font-medium uppercase text-[#19191D]"
                   style={{ fontSize: 'clamp(1rem, 2.2vw, 2.1rem)' }}
                 >
                   {service.name}
                 </span>
                 <span
-                  className="font-light leading-relaxed text-[#0C0C0C] max-w-2xl"
+                  className="font-light leading-relaxed text-[#19191D] max-w-2xl"
                   style={{
                     fontSize: 'clamp(0.85rem, 1.6vw, 1.25rem)',
                     opacity: 0.6,

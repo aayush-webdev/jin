@@ -20,7 +20,7 @@ export default function AboutSection() {
       id="about"
       className="relative min-h-screen flex flex-col items-center justify-center
         px-5 sm:px-8 md:px-10 py-20"
-      style={{ backgroundColor: '#0C0C0C' }}
+      style={{ backgroundColor: '#F5F7FB' }}
     >
       {/* Decorative corner images */}
       {/* Top-left: Moon */}
@@ -71,7 +71,7 @@ export default function AboutSection() {
         <div className="flex flex-col items-center gap-16 sm:gap-20 md:gap-24">
           <AnimatedText
             text={ABOUT_TEXT}
-            className="font-medium text-center leading-relaxed w-full max-w-[560px] text-[#D7E2EA]"
+            className="font-medium text-center leading-relaxed w-full max-w-[560px] text-[#19191D]"
             style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }}
           />
           <ContactButton id="about-contact-btn" />
