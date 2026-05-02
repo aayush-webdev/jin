@@ -30,7 +30,9 @@ A premium, dark-themed 3D creator portfolio landing page built with React, TypeS
 
 ---
 
-# to be updated with new info
+##  file structure
+
+### to be updated
 ---
 
 ## 🚀 Getting Started
