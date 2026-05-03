@@ -1,4 +1,4 @@
-# Jack — 3D Creator Portfolio
+# Jitender  — 3D Creator Portfolio
 
 A premium, dark-themed 3D creator portfolio landing page built with React, TypeScript, Tailwind CSS, and Framer Motion. Designed to make a striking first impression with fluid animations, scroll-driven effects, and a fully responsive layout.
 
@@ -30,30 +30,9 @@ A premium, dark-themed 3D creator portfolio landing page built with React, TypeS
 
 ---
 
-## 📁 Project Structure
+##  file structure
 
-```
-src/
-├── components/
-│   ├── AnimatedText.tsx     # Scroll-driven char-by-char text reveal
-│   ├── ContactButton.tsx    # Gradient pill CTA button
-│   ├── FadeIn.tsx           # Reusable whileInView fade wrapper
-│   ├── LiveProjectButton.tsx # Ghost outline pill button
-│   └── Magnet.tsx           # Mouse-following magnetic hover effect
-│
-├── sections/
-│   ├── HeroSection.tsx      # Full-screen hero with nav + portrait
-│   ├── MarqueeSection.tsx   # Scroll-driven dual-row image marquee
-│   ├── AboutSection.tsx     # About me with animated bio text
-│   ├── ServicesSection.tsx  # 5-item services list on white bg
-│   ├── ProjectsSection.tsx  # 3 sticky stacking project cards
-│   └── ContactSection.tsx   # Contact form + social links + footer
-│
-├── App.tsx
-├── main.tsx
-└── index.css
-```
-
+### to be updated
 ---
 
 ## 🚀 Getting Started
