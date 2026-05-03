@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 import FadeIn from '../components/FadeIn'
 import LiveProjectButton from '../components/LiveProjectButton'
 
@@ -48,61 +48,88 @@ const PROJECTS: Project[] = [
   },
 ]
 
-const TOTAL_CARDS = PROJECTS.length
+// ─── Layout constants ──────────────────────────────────────────────────────────
+// How far from the top of the viewport the first card pins
+const STICKY_TOP_PX = 80
+// Additional downward offset per subsequent card (creates the "peek" effect)
+const STACK_OFFSET_PX = 28
+// How much each buried card shrinks (e.g. 0.04 = 4% smaller per level)
+const SCALE_PER_LEVEL = 0.04
 
+// ─── Types ─────────────────────────────────────────────────────────────────────
 interface ProjectCardProps {
   project: Project
   index: number
   totalCards: number
+  /** Shared scrollYProgress from the cards wrapper — goes 0→1 as the whole stack scrolls */
+  sectionProgress: MotionValue<number>
 }
 
-function ProjectCard({ project, index, totalCards }: ProjectCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+// ─── ProjectCard ───────────────────────────────────────────────────────────────
+function ProjectCard({ project, index, totalCards, sectionProgress }: ProjectCardProps) {
+  /*
+   * Stacking logic
+   * ──────────────
+   * The cards wrapper is divided into `totalCards` equal scroll segments.
+   * Card[i] starts compressing at the moment card[i+1] begins sliding on top
+   * of it — i.e. at scrollProgress = i / totalCards.
+   * It reaches its fully-compressed state by scrollProgress = (i+1) / totalCards.
+   *
+   * The LAST card never compresses (it stays at scale 1 the whole time).
+   */
+  const segStart = index / totalCards
+  const segEnd = (index + 1) / totalCards
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  })
+  // Cards buried deeper get compressed more; last card never compresses
+  const targetScale =
+    index < totalCards - 1
+      ? 1 - (totalCards - 1 - index) * SCALE_PER_LEVEL
+      : 1
 
-  const targetScale = 1 - (totalCards - 1 - index) * 0.03
-  const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale])
+  const scale = useTransform(sectionProgress, [segStart, segEnd], [1, targetScale])
 
   return (
+    // Scroll-space container — one full viewport height per card
     <div
-      ref={containerRef}
-      className="h-[85vh] flex items-start justify-center"
-      style={{ paddingTop: `${index * 28}px` }}
+      className="h-screen flex items-start"
+      style={{ paddingTop: `${index * STACK_OFFSET_PX}px` }}
     >
       <motion.div
-        ref={cardRef}
-        id={`project-card-${project.num}`}
-        style={{ scale, top: `${96 + index * 28}px` }}
-        className="sticky w-full
-          rounded-[40px] sm:rounded-[50px] md:rounded-[60px]
+        style={{
+          scale,
+          // Sticky pins from the top; each card is offset slightly lower
+          position: 'sticky',
+          top: `${STICKY_TOP_PX + index * STACK_OFFSET_PX}px`,
+          // Scale from the top so compressed cards "sink" rather than float up
+          transformOrigin: 'top center',
+        }}
+        className="
+          w-full
+          rounded-[32px] sm:rounded-[44px] md:rounded-[56px]
           border-2 border-[#E2E6EF]
-          bg-[#FFFFFF]
-          p-4 sm:p-6 md:p-8"
+          bg-white
+          p-4 sm:p-6 md:p-8
+        "
       >
-        {/* Top row */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4 sm:mb-6 md:mb-8">
-          <div className="flex items-center gap-4 md:gap-6">
+        {/* ── Header row ─────────────────────────────────────────────────── */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 sm:mb-6 md:mb-8">
+          <div className="flex items-center gap-3 md:gap-6">
             <span
               className="font-black text-[#19191D] leading-none"
-              style={{ fontSize: 'clamp(2.5rem, 8vw, 120px)' }}
+              style={{ fontSize: 'clamp(2rem, 7vw, 100px)' }}
             >
               {project.num}
             </span>
             <div className="flex flex-col">
               <span
-                className="text-[#19191D] uppercase tracking-widest font-medium"
-                style={{ fontSize: 'clamp(0.65rem, 1.2vw, 1rem)', opacity: 0.6 }}
+                className="text-[#19191D] uppercase tracking-widest font-medium opacity-60"
+                style={{ fontSize: 'clamp(0.6rem, 1vw, 0.9rem)' }}
               >
                 {project.category}
               </span>
               <span
                 className="text-[#19191D] font-black uppercase leading-none"
-                style={{ fontSize: 'clamp(1.2rem, 3vw, 2.8rem)' }}
+                style={{ fontSize: 'clamp(0.95rem, 2.5vw, 2.5rem)' }}
               >
                 {project.name}
               </span>
@@ -111,33 +138,68 @@ function ProjectCard({ project, index, totalCards }: ProjectCardProps) {
           <LiveProjectButton id={`live-btn-${project.num}`} />
         </div>
 
-        {/* Bottom row — image grid */}
-        <div className="flex gap-3 sm:gap-4">
-          {/* Left column — 40% width */}
-          <div className="flex flex-col gap-3 sm:gap-4" style={{ width: '40%' }}>
+        {/* ── Image grid ─────────────────────────────────────────────────── */}
+        {/*
+         * Mobile  (<sm):  Big hero image on top, two smaller images side-by-side below
+         * Desktop (≥sm):  Original layout — left col (2 stacked) + right col (1 tall)
+         */}
+
+        {/* MOBILE LAYOUT -------------------------------------------------- */}
+        <div className="flex flex-col gap-3 sm:hidden">
+          {/* Hero image */}
+          <img
+            src={project.col2Img}
+            alt={`${project.name} main`}
+            loading="lazy"
+            className="w-full object-cover rounded-2xl"
+            style={{ height: 'clamp(180px, 52vw, 320px)' }}
+          />
+          {/* Two smaller images side by side */}
+          <div className="flex gap-3">
             <img
               src={project.col1Img1}
               alt={`${project.name} preview 1`}
               loading="lazy"
-              className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
+              className="flex-1 object-cover rounded-2xl"
+              style={{ height: 'clamp(110px, 28vw, 200px)' }}
+            />
+            <img
+              src={project.col1Img2}
+              alt={`${project.name} preview 2`}
+              loading="lazy"
+              className="flex-1 object-cover rounded-2xl"
+              style={{ height: 'clamp(110px, 28vw, 200px)' }}
+            />
+          </div>
+        </div>
+
+        {/* DESKTOP LAYOUT ------------------------------------------------- */}
+        <div className="hidden sm:flex gap-4">
+          {/* Left column — 40% */}
+          <div className="flex flex-col gap-4" style={{ width: '40%' }}>
+            <img
+              src={project.col1Img1}
+              alt={`${project.name} preview 1`}
+              loading="lazy"
+              className="w-full object-cover rounded-[36px] md:rounded-[48px]"
               style={{ height: 'clamp(130px, 16vw, 230px)' }}
             />
             <img
               src={project.col1Img2}
               alt={`${project.name} preview 2`}
               loading="lazy"
-              className="w-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
+              className="w-full object-cover rounded-[36px] md:rounded-[48px]"
               style={{ height: 'clamp(160px, 22vw, 340px)' }}
             />
           </div>
 
-          {/* Right column — 60% width */}
+          {/* Right column — 60% */}
           <div style={{ width: '60%' }}>
             <img
               src={project.col2Img}
-              alt={`${project.name} preview 3`}
+              alt={`${project.name} main`}
               loading="lazy"
-              className="w-full h-full object-cover rounded-[40px] sm:rounded-[50px] md:rounded-[60px]"
+              className="w-full h-full object-cover rounded-[36px] md:rounded-[48px]"
               style={{
                 minHeight: 'clamp(290px, 38vw, 580px)',
                 maxHeight: 'clamp(290px, 38vw, 580px)',
@@ -150,13 +212,33 @@ function ProjectCard({ project, index, totalCards }: ProjectCardProps) {
   )
 }
 
+// ─── ProjectsSection ───────────────────────────────────────────────────────────
 export default function ProjectsSection() {
+  /*
+   * Track scroll progress on the CARDS WRAPPER (not the whole section or each
+   * individual card).  offset 'start start' → 'end end' means:
+   *   progress = 0  when the wrapper's top  hits the viewport's top
+   *   progress = 1  when the wrapper's bottom hits the viewport's bottom
+   * This gives us a clean 0→1 range covering exactly the stacking animation.
+   */
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: cardsRef,
+    offset: ['start start', 'end end'],
+  })
+
   return (
     <section
       id="projects"
-      className="bg-[#F5F7FB] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
-        -mt-10 sm:-mt-12 md:-mt-14 z-10 relative
-        px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-20"
+      className="
+        bg-[#F5F7FB]
+        rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
+        -mt-10 sm:-mt-12 md:-mt-14
+        z-10 relative
+        px-5 sm:px-8 md:px-10
+        pt-20 sm:pt-24 md:pt-32
+        pb-20
+      "
     >
       {/* Heading */}
       <FadeIn delay={0} y={40} className="mb-16 sm:mb-20 md:mb-24">
@@ -168,14 +250,15 @@ export default function ProjectsSection() {
         </h2>
       </FadeIn>
 
-      {/* Sticky stacking cards */}
-      <div className="relative">
+      {/* Cards wrapper — scroll progress tracked here */}
+      <div ref={cardsRef} className="relative">
         {PROJECTS.map((project, i) => (
           <ProjectCard
             key={project.num}
             project={project}
             index={i}
-            totalCards={TOTAL_CARDS}
+            totalCards={PROJECTS.length}
+            sectionProgress={scrollYProgress}
           />
         ))}
       </div>
