@@ -15,7 +15,7 @@ export default function ContactButton({ id = 'contact-btn' }: ContactButtonProps
         px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4
         text-xs sm:text-sm md:text-base
 
-        backdrop-blur-lg bg-[#3C83F5]/80
+        backdrop-blur-lg bg-[#3C83F5]/90
         border border-white/20
 
         shadow-[0_8px_32px_rgba(60,131,245,0.35)]
