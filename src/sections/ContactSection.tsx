@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import FadeIn from '../components/FadeIn'
+import emailjs from '@emailjs/browser'
 
 // Social link icons as inline SVGs to avoid lucide peer-dep issues
 const SOCIAL_LINKS = [
@@ -76,11 +77,39 @@ export default function ContactSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('sending')
-    // Simulate a send
-    setTimeout(() => {
-      setStatus('sent')
-      setForm({ name: '', email: '', subject: '', message: '' })
-    }, 1400)
+    
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+    if (!serviceId || !templateId || !publicKey) {
+      console.error('EmailJS credentials are not configured in .env')
+      alert('Email service is not configured yet. Please try again later.')
+      setStatus('idle')
+      return
+    }
+
+    emailjs.send(
+      serviceId,
+      templateId,
+      {
+        from_name: form.name,
+        reply_to: form.email,
+        subject: form.subject,
+        message: form.message,
+      },
+      publicKey
+    )
+      .then(() => {
+        setStatus('sent')
+        setForm({ name: '', email: '', subject: '', message: '' })
+        setTimeout(() => setStatus('idle'), 5000)
+      })
+      .catch((err) => {
+        console.error('Failed to send email:', err)
+        alert('Failed to send message. Please try again later.')
+        setStatus('idle')
+      })
   }
 
   const inputClass =
