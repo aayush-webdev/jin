@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import FadeIn from '../components/FadeIn'
 import emailjs from '@emailjs/browser'
@@ -64,30 +64,56 @@ interface FormState {
   message: string
 }
 
-type SubmitStatus = 'idle' | 'sending' | 'sent'
+type SubmitStatus = 'idle' | 'sending' | 'sent' | 'error'
 
 export default function ContactSection() {
   const [form, setForm] = useState<FormState>({ name: '', email: '', subject: '', message: '' })
   const [status, setStatus] = useState<SubmitStatus>('idle')
+  const [errors, setErrors] = useState<Partial<FormState>>({})
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  // Clear the reset timer when the component unmounts
+  useEffect(() => () => clearTimeout(timerRef.current), [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+    // Clear the error for this field as the user types
+    if (errors[name as keyof FormState]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }))
+    }
+  }
+
+  const validate = (): boolean => {
+    const next: Partial<FormState> = {}
+    if (!form.name.trim()) next.name = 'Name is required'
+    if (!form.email.trim()) {
+      next.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      next.email = 'Enter a valid email address'
+    }
+    if (!form.message.trim()) next.message = 'Message is required'
+    setErrors(next)
+    return Object.keys(next).length === 0
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setStatus('sending')
-    
+
+    // Run client-side validation first — abort if invalid
+    if (!validate()) return
+
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
     if (!serviceId || !templateId || !publicKey) {
       console.error('EmailJS credentials are not configured in .env')
-      alert('Email service is not configured yet. Please try again later.')
-      setStatus('idle')
+      setStatus('error')
       return
     }
+
+    setStatus('sending')
 
     emailjs.send(
       serviceId,
@@ -95,7 +121,7 @@ export default function ContactSection() {
       {
         from_name: form.name,
         reply_to: form.email,
-        subject: form.subject,
+        subject: form.subject.trim() || '(No subject)',
         message: form.message,
       },
       publicKey
@@ -103,12 +129,12 @@ export default function ContactSection() {
       .then(() => {
         setStatus('sent')
         setForm({ name: '', email: '', subject: '', message: '' })
-        setTimeout(() => setStatus('idle'), 5000)
+        setErrors({})
+        timerRef.current = setTimeout(() => setStatus('idle'), 5000)
       })
       .catch((err) => {
         console.error('Failed to send email:', err)
-        alert('Failed to send message. Please try again later.')
-        setStatus('idle')
+        setStatus('error')
       })
   }
 
@@ -218,9 +244,15 @@ export default function ContactSection() {
                   placeholder="Your name"
                   value={form.name}
                   onChange={handleChange}
-                  required
-                  className={inputClass}
+                  aria-describedby={errors.name ? 'error-name' : undefined}
+                  aria-invalid={!!errors.name}
+                  className={`${inputClass} ${errors.name ? 'border-red-400 focus:border-red-400' : ''}`}
                 />
+                {errors.name && (
+                  <span id="error-name" role="alert" className="text-red-500 text-xs pl-1">
+                    {errors.name}
+                  </span>
+                )}
               </div>
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="contact-email" className="text-[#8A93A3] text-xs uppercase tracking-widest font-medium pl-1">
@@ -233,9 +265,15 @@ export default function ContactSection() {
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={handleChange}
-                  required
-                  className={inputClass}
+                  aria-describedby={errors.email ? 'error-email' : undefined}
+                  aria-invalid={!!errors.email}
+                  className={`${inputClass} ${errors.email ? 'border-red-400 focus:border-red-400' : ''}`}
                 />
+                {errors.email && (
+                  <span id="error-email" role="alert" className="text-red-500 text-xs pl-1">
+                    {errors.email}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -267,9 +305,15 @@ export default function ContactSection() {
                 placeholder="Tell me about your project…"
                 value={form.message}
                 onChange={handleChange}
-                required
-                className={`${inputClass} resize-none`}
+                aria-describedby={errors.message ? 'error-message' : undefined}
+                aria-invalid={!!errors.message}
+                className={`${inputClass} resize-none ${errors.message ? 'border-red-400 focus:border-red-400' : ''}`}
               />
+              {errors.message && (
+                <span id="error-message" role="alert" className="text-red-500 text-xs pl-1">
+                  {errors.message}
+                </span>
+              )}
             </div>
 
             {/* Submit */}
@@ -277,26 +321,44 @@ export default function ContactSection() {
               <motion.button
                 id="contact-submit"
                 type="submit"
-                disabled={status === 'sending' || status === 'sent'}
-                whileHover={{ scale: status === 'idle' ? 1.03 : 1 }}
-                whileTap={{ scale: status === 'idle' ? 0.97 : 1 }}
+                disabled={status === 'sending'}
+                whileHover={{ scale: status !== 'sending' ? 1.03 : 1 }}
+                whileTap={{ scale: status !== 'sending' ? 0.97 : 1 }}
                 className="rounded-full font-medium uppercase tracking-widest text-white cursor-pointer
                   px-10 py-4 text-sm
-                  disabled:opacity-60 disabled:cursor-not-allowed 
+                  disabled:opacity-60 disabled:cursor-not-allowed
                   bg-[#3C83F5] hover:bg-[#2F6FE0] transition-colors duration-200"
               >
                 {status === 'sending' ? 'Sending…' : status === 'sent' ? '✓ Sent!' : 'Send Message'}
               </motion.button>
 
-              {status === 'sent' && (
-                <motion.span
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="text-[#5B6472] text-sm font-light"
-                >
-                  I&apos;ll get back to you soon.
-                </motion.span>
-              )}
+              {/* Status messages — announced to screen readers */}
+              <div role="status" aria-live="polite" className="text-sm font-light">
+                {status === 'sent' && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="text-[#5B6472]"
+                  >
+                    I&apos;ll get back to you soon.
+                  </motion.span>
+                )}
+                {status === 'error' && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="text-red-500"
+                  >
+                    Failed to send. Please try again or{' '}
+                    <a
+                      href="mailto:aayushsharma7065@gmail.com"
+                      className="underline hover:text-red-400 transition-colors"
+                    >
+                      email me directly
+                    </a>.
+                  </motion.span>
+                )}
+              </div>
             </div>
           </form>
         </FadeIn>
